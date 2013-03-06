@@ -42,6 +42,15 @@ public abstract class AbstractSwtBotTester {
             }
         });
     }
+    
+	protected void createIncQueryProject(String projectName) {
+		bot.menu("File").menu("New").menu("Project...").click();
+		bot.shell("New Project").activate();
+		bot.tree().expandNode("EMF-IncQuery").select("EMF-IncQuery Project");
+		bot.button("Next >").click();
+		bot.textWithLabel("Project name:").setText(projectName);
+		bot.button("Finish").click();
+	}
 
     private static void resetWorkbench() {
         try {
