@@ -2,7 +2,7 @@ package org.eclipse.incquery.tooling.ui.tests;
 
 import org.junit.Test;
 
-public class CheatSheetTests extends AbstractSwtBotTester {
+public class CheatSheetTests extends AbstractIncQueryTester {
 
 	private static String GETTING_STARTED = "Getting Started with EMF-IncQuery";
 	private static String INCQUERY = "EMF-IncQuery";

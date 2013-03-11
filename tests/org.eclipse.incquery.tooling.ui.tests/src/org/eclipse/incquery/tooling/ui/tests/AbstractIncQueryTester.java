@@ -15,6 +15,7 @@ import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IWorkbench;
@@ -33,7 +34,7 @@ import org.junit.runner.RunWith;
  */
 
 @RunWith(SWTBotJunit4ClassRunner.class)
-public abstract class AbstractSwtBotTester {
+public abstract class AbstractIncQueryTester {
 
     protected static SWTWorkbenchBot bot;
     
@@ -76,11 +77,12 @@ public abstract class AbstractSwtBotTester {
             if (activeShell != workbenchWindow.getShell()) {
                 activeShell.close();
             }
+            
             page.closeAllEditors(false);
             String defaultPerspectiveId =
                     workbench.getPerspectiveRegistry().getDefaultPerspective();
             workbench.showPerspective(defaultPerspectiveId, workbenchWindow);
-            page.resetPerspective();
+            //page.resetPerspective();
         } catch (WorkbenchException e) {
             throw new RuntimeException(e);
         }
@@ -136,5 +138,8 @@ public abstract class AbstractSwtBotTester {
 		}
 		return sb.toString();
 	}
-
+	protected SWTBotTreeItem getTreeItemFromProject(String... strings) {
+		return bot.viewByTitle("Project Explorer").bot().tree().expandNode(strings);
+	}
+	
 }
