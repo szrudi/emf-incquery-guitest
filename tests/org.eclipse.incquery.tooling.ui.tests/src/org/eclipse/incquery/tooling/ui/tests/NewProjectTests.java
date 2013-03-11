@@ -9,7 +9,6 @@ public class NewProjectTests extends AbstractSwtBotTester{
 	@Test
 	public void test() {
 		createIncQueryProject(PROJECTNAME);
-		bot.sleep(5000);
 		SWTBotView projectExplorer = bot.viewByTitle("Project Explorer");
 		projectExplorer.bot().tree().getTreeItem(PROJECTNAME);
 	}
