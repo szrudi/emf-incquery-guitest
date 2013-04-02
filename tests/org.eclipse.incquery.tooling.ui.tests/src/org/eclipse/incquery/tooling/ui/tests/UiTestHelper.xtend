@@ -4,7 +4,7 @@ import org.eclipse.incquery.tooling.ui.tests.swtbot.Button
 import org.eclipse.incquery.tooling.ui.tests.swtbot.Editor
 import org.eclipse.incquery.tooling.ui.tests.swtbot.Menu
 import org.eclipse.incquery.tooling.ui.tests.swtbot.Shell
-import org.eclipse.incquery.tooling.ui.tests.swtbot.Text
+import org.eclipse.incquery.tooling.ui.tests.swtbot.TextField
 import org.eclipse.incquery.tooling.ui.tests.swtbot.Tree
 import org.eclipse.incquery.tooling.ui.tests.swtbot.View
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot
@@ -32,7 +32,7 @@ class UiTestHelper {
 		
 	}
 	
-	def text(String s){ new Text(s) }
+	def text(String s){ new TextField(s) }
 	def tree(String s){ new Tree(s) }
 	def tree(){ tree("") }
 	def Menu menu(String s){ new Menu(s); }
@@ -45,12 +45,6 @@ class UiTestHelper {
 	
 	
 	def captureScreenshot(String filename){
-		SWTUtils::captureScreenshot(filename + "-window.png")
+		SWTUtils::captureScreenshot(filename)
 	}	
 }
-
-
-
-
-
-
