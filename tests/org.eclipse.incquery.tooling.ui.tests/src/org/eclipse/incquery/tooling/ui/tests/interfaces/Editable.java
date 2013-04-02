@@ -1,5 +1,7 @@
 package org.eclipse.incquery.tooling.ui.tests.interfaces;
 
-interface Editable<T> {
+public interface Editable<T> {
 	T setText(String text);
+	T saveAndClose();
+	T save();
 }

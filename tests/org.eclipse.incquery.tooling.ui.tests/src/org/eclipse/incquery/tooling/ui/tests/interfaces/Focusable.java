@@ -1,6 +1,6 @@
 package org.eclipse.incquery.tooling.ui.tests.interfaces;
 
-interface Focusable<T> {
+public interface Focusable<T> {
 	T focus();
 	T waitUntilCloses();
 	T waitUntilCloses(int timeout);

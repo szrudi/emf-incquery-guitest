@@ -1,5 +1,5 @@
 package org.eclipse.incquery.tooling.ui.tests.interfaces;
 
-interface Treelike {
-	void choose(String... path);
+public interface Treelike<T> {
+	T choose(String... path);
 }
