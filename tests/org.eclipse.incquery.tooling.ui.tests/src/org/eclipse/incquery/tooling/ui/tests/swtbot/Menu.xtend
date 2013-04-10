@@ -19,4 +19,10 @@ class Menu extends SwtBotComponent implements Treelike {
 		return this
 	}
 	
+
+	override doubleClick(String... path) {
+		choose(path)
+		return this
+	}
+	
 }

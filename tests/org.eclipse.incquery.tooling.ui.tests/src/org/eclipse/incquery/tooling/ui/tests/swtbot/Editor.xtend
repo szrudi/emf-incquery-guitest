@@ -1,12 +1,8 @@
 package org.eclipse.incquery.tooling.ui.tests.swtbot
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor
-import org.hamcrest.Matcher
-import org.eclipse.swtbot.eclipse.finder.waits.Conditions
-import org.hamcrest.Matchers
-import org.eclipse.swtbot.eclipse.finder.matchers.WithPartName
 import org.eclipse.incquery.tooling.ui.tests.interfaces.Editable
 import org.eclipse.incquery.tooling.ui.tests.interfaces.Focusable
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor
 
 import static org.eclipse.incquery.tooling.ui.tests.swtbot.SwtBotComponent.*
 
@@ -35,14 +31,11 @@ class Editor extends SwtBotComponent implements Editable, Focusable {
 	override Editor focus() {
 		widget.setFocus
 		return this
-	}	
+	}
 	override Editor waitUntilCloses(int timeout) {
-		val Matcher withPartName = WithPartName::withPartName(Matchers::containsString(title));		
-		bot.waitUntil(Conditions::waitForEditor(withPartName))
-		return this
+		throw new UnsupportedOperationException("Auto-generated function stub")
 	}
 	override Editor waitUntilCloses() {
 		waitUntilCloses(30000)
 	}
-	
 }

@@ -8,13 +8,19 @@ class Tree extends SwtBotComponent implements Treelike {
 	
 	new(String widgetName){
 		if (widgetName.empty){
-			this.widget = bot.tree()
+			this.widget = bot.tree
 		} else {
 			this.widget = bot.treeWithLabel(widgetName)
 		}
 	}
 	override Tree choose(String... path) {
-		widget.expandNode(path).select()
+		widget.expandNode(path).select
 		return this
 	}
+	
+	override doubleClick(String... path) {
+		widget.expandNode(path).select.doubleClick
+		return this
+	}
+	
 }

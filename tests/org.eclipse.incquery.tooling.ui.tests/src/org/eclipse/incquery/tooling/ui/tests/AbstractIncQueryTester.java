@@ -34,7 +34,7 @@ import org.junit.runner.RunWith;
  */
 
 @RunWith(SWTBotJunit4ClassRunner.class)
-public abstract class AbstractIncQueryTester {
+public class AbstractIncQueryTester {
 
     protected static SWTWorkbenchBot bot;
     
@@ -60,7 +60,7 @@ public abstract class AbstractIncQueryTester {
 		bot.menu("File").menu("New").menu("Project...").click();
 		SWTBotShell shell = bot.shell("New Project");
 		shell.activate();
-		bot.tree().expandNode("EMF-IncQuery").select("EMF-IncQuery Project");
+		bot.tree().expandNode("EMF-IncQuery","EMF-IncQuery Project").select();
 		bot.button("Next >").click();
 		bot.textWithLabel("Project name:").setText(projectName);
 		bot.button("Finish").click();

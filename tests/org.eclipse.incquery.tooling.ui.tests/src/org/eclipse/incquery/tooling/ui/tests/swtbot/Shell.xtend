@@ -31,5 +31,9 @@ class Shell extends SwtBotComponent implements Focusable {
 	override Shell waitUntilCloses(){
 		return waitUntilCloses(30000);
 	}
+	def getWidget() {
+		return widget.widget
+	}
+	
 }
 	
