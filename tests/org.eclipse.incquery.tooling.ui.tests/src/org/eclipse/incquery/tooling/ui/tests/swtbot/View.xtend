@@ -1,7 +1,7 @@
 package org.eclipse.incquery.tooling.ui.tests.swtbot
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView
 import org.eclipse.incquery.tooling.ui.tests.interfaces.Focusable
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView
 
 import static org.eclipse.incquery.tooling.ui.tests.swtbot.SwtBotComponent.*
 
@@ -26,6 +26,8 @@ class View extends SwtBotComponent implements Focusable {
 		waitUntilCloses(30000);
 		return this
 	}
-	
+	def SWTBotView getWidget(){
+		return widget
+	}
 }
 	

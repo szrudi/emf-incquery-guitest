@@ -9,10 +9,10 @@ import static org.eclipse.incquery.tooling.ui.tests.swtbot.SwtBotComponent.*
 import static extension org.eclipse.swtbot.swt.finder.waits.Conditions.*
 
 class Shell extends SwtBotComponent implements Focusable {
-	val SWTBotShell widget;
+	val SWTBotShell widget
 	
 	new(String widgetName){
-		this.widget = bot.shell(widgetName);
+		this.widget = bot.shell(widgetName)
 	}
 	
 	override Shell focus() {
@@ -32,8 +32,7 @@ class Shell extends SwtBotComponent implements Focusable {
 		return waitUntilCloses(30000);
 	}
 	def getWidget() {
-		return widget.widget
+		return widget
 	}
-	
 }
 	

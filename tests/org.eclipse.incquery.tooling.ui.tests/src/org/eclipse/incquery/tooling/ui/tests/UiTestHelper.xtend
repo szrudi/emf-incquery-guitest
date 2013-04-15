@@ -6,27 +6,31 @@ import org.eclipse.incquery.tooling.ui.tests.swtbot.Editor
 import org.eclipse.incquery.tooling.ui.tests.swtbot.Menu
 import org.eclipse.incquery.tooling.ui.tests.swtbot.Shell
 import org.eclipse.incquery.tooling.ui.tests.swtbot.TextField
+import org.eclipse.incquery.tooling.ui.tests.swtbot.ToolbarDropDownbutton
 import org.eclipse.incquery.tooling.ui.tests.swtbot.Tree
 import org.eclipse.incquery.tooling.ui.tests.swtbot.View
+import org.eclipse.incquery.tooling.ui.tests.swtbot.Wait
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotWorkbenchPart
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException
 import org.eclipse.swtbot.swt.finder.utils.FileUtils
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils
 import org.junit.BeforeClass
 import org.osgi.framework.Bundle
-import java.util.List
+
+import static extension org.eclipse.incquery.tooling.ui.tests.UiTestHelper.*
 
 class UiTestHelper {
-	
-	private val SWTWorkbenchBot ui = new SWTWorkbenchBot()
-	
+	static var screenshotCounter = 0;
+		
 	@BeforeClass
 	def void beforeClass(){
 		var SWTBotView view
 		
 		try {
-			view = ui.activeView();	
+			val SWTWorkbenchBot bot = new SWTWorkbenchBot()
+			view = bot.activeView();	
 		} catch (WidgetNotFoundException e){
 			println("No active view")			
 		}
@@ -35,27 +39,53 @@ class UiTestHelper {
         }
 		
 	}
+	/*
+	@AfterClass
+    def void resetWorkbench() {
+        try {
+            val IWorkbench workbench = PlatformUI::getWorkbench();
+            val IWorkbenchWindow workbenchWindow =
+                    workbench.getActiveWorkbenchWindow();
+            val IWorkbenchPage page = workbenchWindow.getActivePage();
+            val org.eclipse.swt.widgets.Shell activeShell = Display::getCurrent().getActiveShell();
+            if (activeShell != workbenchWindow.getShell()) {
+                activeShell.close();
+            }
+            
+            page.closeAllEditors(false);
+            val String defaultPerspectiveId =
+                    workbench.getPerspectiveRegistry().getDefaultPerspective();
+            workbench.showPerspective(defaultPerspectiveId, workbenchWindow);
+            page.resetPerspective();
+        } catch (WorkbenchException e) {
+            throw new RuntimeException(e);
+        }
+    }
+	*/
 	
 	def text(String s){ new TextField(s) }
-	def tree(String s){ new Tree(s) }
 	def tree(){ tree("") }
+	def tree(String s){ new Tree(s) }
+	def tree(Integer i, View v){ new Tree(i, v.widget) }
 	def Menu menu(String s){ new Menu(s); }
 	//def contextMenu(String s){ s }
 	def button(String s){ new Button(s) }
-	//def toolbarDropDownbutton(String s){ s }
+	def toolbarDropDownbutton(String s){ new ToolbarDropDownbutton(s) }
+	def toolbarDropDownbutton(String s, View v){ new ToolbarDropDownbutton(s,v.widget) }
 	def shell(String s){ new Shell(s) }
 	def view(String s){ new View(s) }
 	def editor(String s){ new Editor(s) }
 	
 	
 	def captureScreenshot(String filename){
-		SWTUtils::captureScreenshot(filename)
+		screenshotCounter = screenshotCounter + 1
+		SWTUtils::captureScreenshot(screenshotCounter + "-" + filename)
 	}
 	
 	def captureScreenshot(String filename, Shell s){
-		SWTUtils::captureScreenshot(filename, s.getWidget)
+		screenshotCounter = screenshotCounter + 1
+		SWTUtils::captureScreenshot(screenshotCounter + "-" + filename, s.widget.widget)
 	}
-	
 	def createFolderInPath(String folderName, String... path){
 		"File".menu.choose("New","Folder")
 		val s = "New Folder".shell.focus
@@ -89,5 +119,13 @@ class UiTestHelper {
 		"File".menu.choose("Rename...")
 		"New name:".text.setText(fileName)
 		"OK".button.click
-	}	
+	}
+	def setupProjectDependency(String projectName, String manifest) {
+		"Project Explorer".view.focus
+		val String[] pl = newArrayList(projectName,"META-INF","MANIFEST.MF")
+		val String[] al = newArrayList("Open With","Text Editor")
+		tree.chooseActionFromContextMenu(pl,al);	
+		Wait::forEditor("MANIFEST.MF");
+		"MANIFEST.MF".editor.setText(manifest).saveAndClose	
+	}
 }
