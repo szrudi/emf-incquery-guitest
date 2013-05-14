@@ -1,10 +1,10 @@
-package org.eclipse.incquery.tooling.ui.tests.swtbot
+package org.eclipse.incquery.tooling.ui.tests.swtbot.basic
 
 import org.eclipse.incquery.tooling.ui.tests.interfaces.Editable
 import org.eclipse.incquery.tooling.ui.tests.interfaces.Focusable
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor
 
-import static org.eclipse.incquery.tooling.ui.tests.swtbot.SwtBotComponent.*
+import static org.eclipse.incquery.tooling.ui.tests.swtbot.basic.SwtBotComponent.*
 
 class Editor extends SwtBotComponent implements Editable, Focusable {
 	val SWTBotEclipseEditor widget
@@ -34,8 +34,10 @@ class Editor extends SwtBotComponent implements Editable, Focusable {
 	}
 	override Editor waitUntilCloses(int timeout) {
 		throw new UnsupportedOperationException("Auto-generated function stub")
+		//return this
 	}
 	override Editor waitUntilCloses() {
 		waitUntilCloses(30000)
+		return this
 	}
 }

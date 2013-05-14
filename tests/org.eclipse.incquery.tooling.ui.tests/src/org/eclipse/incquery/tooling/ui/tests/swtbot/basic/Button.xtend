@@ -1,7 +1,9 @@
-package org.eclipse.incquery.tooling.ui.tests.swtbot
+package org.eclipse.incquery.tooling.ui.tests.swtbot.basic
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton
 import org.eclipse.incquery.tooling.ui.tests.interfaces.Clickable
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton
+
+import static org.eclipse.incquery.tooling.ui.tests.swtbot.basic.SwtBotComponent.*
 
 class Button extends SwtBotComponent implements Clickable {
 	val SWTBotButton widget
@@ -14,5 +16,8 @@ class Button extends SwtBotComponent implements Clickable {
 		widget.click()
 		return this
 	} 
-	
+
+	override isInactive() {
+		return !widget.enabled
+	}
 }

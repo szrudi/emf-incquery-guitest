@@ -1,9 +1,9 @@
-package org.eclipse.incquery.tooling.ui.tests.swtbot
+package org.eclipse.incquery.tooling.ui.tests.swtbot.basic
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotText
 import org.eclipse.incquery.tooling.ui.tests.interfaces.Editable
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotText
 
-import static org.eclipse.incquery.tooling.ui.tests.swtbot.SwtBotComponent.*
+import static org.eclipse.incquery.tooling.ui.tests.swtbot.basic.SwtBotComponent.*
 
 class TextField extends SwtBotComponent implements Editable {
 	val SWTBotText widget;

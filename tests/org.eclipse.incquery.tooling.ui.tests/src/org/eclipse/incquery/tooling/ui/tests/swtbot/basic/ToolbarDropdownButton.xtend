@@ -1,16 +1,17 @@
-package org.eclipse.incquery.tooling.ui.tests.swtbot
+package org.eclipse.incquery.tooling.ui.tests.swtbot.basic
 
 import org.eclipse.incquery.tooling.ui.tests.interfaces.Clickable
 import org.eclipse.incquery.tooling.ui.tests.interfaces.Treelike
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotWorkbenchPart
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarDropDownButton
 
-import static org.eclipse.incquery.tooling.ui.tests.swtbot.SwtBotComponent.*
+import static org.eclipse.incquery.tooling.ui.tests.swtbot.basic.SwtBotComponent.*
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException
 
-class ToolbarDropDownbutton extends SwtBotComponent implements Clickable, Treelike {
+class ToolbarDropDownButton extends SwtBotComponent implements Clickable, Treelike {
 	val SWTBotToolbarDropDownButton widget
 	
-	new(String widgetName){
+	new(String widgetName){ 
 		this.widget = bot.toolbarDropDownButton(widgetName)
 	}
 
@@ -18,13 +19,13 @@ class ToolbarDropDownbutton extends SwtBotComponent implements Clickable, Treeli
 		this.widget = part.toolbarDropDownButton(widgetName)
 	}
 
-	override ToolbarDropDownbutton click() {
+	override ToolbarDropDownButton click() {
 		widget.click()
 		return this
 	} 
 	
 
-	override ToolbarDropDownbutton choose(String... path) {
+	override ToolbarDropDownButton choose(String... path) {
 		if (path.size > 1){
 			throw new UnsupportedOperationException(
 				"ToolbarDropDownbutton only supports first level elements")
@@ -33,8 +34,23 @@ class ToolbarDropDownbutton extends SwtBotComponent implements Clickable, Treeli
 		return this
 	}
 	
-	override ToolbarDropDownbutton doubleClick(String... path) {
+	override ToolbarDropDownButton activate(String... path) {
 		choose(path)
 		return this
 	}
+	override isInactive() {
+		return !widget.enabled
+		//SWTBotAssert::assertNotEnabled(widget)
+		//return this
+	}
+		
+	override hasItem(String[] path) {
+		try {
+			choose(path)
+			return true
+		} catch (WidgetNotFoundException e) {
+			return false
+		}
+	}
+
 }

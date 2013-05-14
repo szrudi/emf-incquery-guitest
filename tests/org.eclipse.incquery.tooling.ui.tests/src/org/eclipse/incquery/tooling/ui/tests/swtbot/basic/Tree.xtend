@@ -1,11 +1,12 @@
-package org.eclipse.incquery.tooling.ui.tests.swtbot
+package org.eclipse.incquery.tooling.ui.tests.swtbot.basic
 
 import org.eclipse.incquery.tooling.ui.tests.interfaces.Treelike
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotWorkbenchPart
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem
 
-import static org.eclipse.incquery.tooling.ui.tests.swtbot.SwtBotComponent.*
+import static org.eclipse.incquery.tooling.ui.tests.swtbot.basic.SwtBotComponent.*
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException
 
 class Tree extends SwtBotComponent implements Treelike {
 	val SWTBotTree widget;
@@ -25,7 +26,7 @@ class Tree extends SwtBotComponent implements Treelike {
 		return this
 	}
 	
-	override doubleClick(String... path) {
+	override activate(String... path) {
 		getTreeItem(path).doubleClick
 		return this
 	}
@@ -43,4 +44,12 @@ class Tree extends SwtBotComponent implements Treelike {
 		widget.expandNode(path).select
 	}
 	
+	override hasItem(String... path) {
+		try {
+			getTreeItem(path)
+			return true
+		} catch (WidgetNotFoundException e) {
+			return false
+		}
+	}
 }

@@ -1,9 +1,9 @@
-package org.eclipse.incquery.tooling.ui.tests.swtbot
+package org.eclipse.incquery.tooling.ui.tests.swtbot.basic
 
 import org.eclipse.incquery.tooling.ui.tests.interfaces.Focusable
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView
 
-import static org.eclipse.incquery.tooling.ui.tests.swtbot.SwtBotComponent.*
+import static org.eclipse.incquery.tooling.ui.tests.swtbot.basic.SwtBotComponent.*
 
 class View extends SwtBotComponent implements Focusable {
 	val SWTBotView widget
