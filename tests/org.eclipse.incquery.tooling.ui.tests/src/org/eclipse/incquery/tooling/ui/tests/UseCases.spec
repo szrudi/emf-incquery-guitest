@@ -1,10 +1,12 @@
 package org.eclipse.incquery.tooling.ui.tests
 
-import static extension org.eclipse.incquery.tooling.ui.tests.UseCasesSpecSpec.*
+import org.eclipse.incquery.tooling.ui.tests.swtbot.helper.UiTestBot
+
+import static org.eclipse.incquery.tooling.ui.tests.UseCasesSpecSpec.*
 
 describe "Use cases spec" {
 	
-	extension static UiTestHelper api = new UiTestHelper()
+	extension static UiTestBot api = new UiTestBot()
 	static val projectName = "school.tests"
 	
 	/*
@@ -15,32 +17,44 @@ describe "Use cases spec" {
 	 * "New Project" wizard
 	 */
 	fact "New EMF-IncQuery project wizard" {
-		"File".menu.choose("New", "Project...")
-		"New Project".shell.focus
-		tree.choose("EMF-IncQuery","EMF-IncQuery Project")
+		find.menu("File").choose("New", "Project...")
+		find.window("New Project").focus
+		find.tree.choose("EMF-IncQuery","EMF-IncQuery Project")
 	}
 	
 	/*
 	 * After finishing the new project wizard, the project is created.
 	 */
 	fact "New EMF-IncQuery project created" {
-		val shell = "New Project".shell
-		"Next >".button.click
-		"Project name:".text.setText(projectName)
-		"Finish".button.click
+		find.menu("File").choose("New", "Project...")
+		val shell = find.window("New Project").focus
+		find.tree.choose("EMF-IncQuery","EMF-IncQuery Project")
+		find.button("Next >").click
+		find.text("Project name:").setText(projectName)
+		find.button("Finish").click
 		shell.waitUntilCloses
-		"Project Explorer".view.focus
-		tree.choose(projectName)
+		find.view("Project Explorer").focus
+		find.tree.choose(projectName)
 	}
+	
 	/*
 	 * Query explorer view can be opened from Show View > Other... menu
 	 */
 	fact "Query Explorer opens" {
-		"Window".menu.choose("Show View", "Other...")
-		val shell = "Show View".shell.focus
-		tree.choose("EMF-IncQuery","Query Explorer")
-		"OK".button.click
+		find.menu("Window").choose("Show View", "Other...")
+		val shell = find.window("Show View").focus
+		find.tree.choose("EMF-IncQuery","Query Explorer")
+		find.button("OK").click
 		shell.waitUntilCloses
-		"Query Explorer".view
+		find.view("Query Explorer")
 	}
+	
+	fact "Open my.eiq file and set test pattern" {
+		projectExplorer.open("test_project", "src", "my.eiq")
+		help.waitFor.editor("my.eiq")
+		find.editor("my.eiq")
+			.setText("pattern schools(Sch) = { School(Sch); }")
+		find.editor("my.eiq").save
+		queryExplorer.greenButton.click
+	}		
 }
