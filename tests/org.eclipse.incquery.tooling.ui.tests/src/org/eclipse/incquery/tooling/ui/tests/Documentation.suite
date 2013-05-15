@@ -1,0 +1,22 @@
+package org.eclipse.incquery.tooling.ui.tests
+
+#Defining Model Queries using EMF\-IncQuery  
+
+EMF\-IncQuery provides an intuitive user interface to create, edit and debug queries. It assists 
+users with various wizards, supports the editing of query definitions (patterns) in an 
+Xtext based editor and also provides query debugging features with the Query Explorer view.
+
+##The main components:
+- "Wizards": Wizards there are wizards available to create EMF\-IncQuery project, generator model and queries. These wizards 
+  are available under the EMF\-IncQuery category when creating new resources (see the picture below)
+  ![Wizards](..\..\..\..\..\..\screen\-9\-crop.png)
+- "Query editor": the Xtext based editor can be used to create EMF\-IncQuery queries.  The editor 
+  provides many features to ease the development, such as automatic code completion, validation, etc.
+- "Query Explorer": this view can be used to apply queries on various EMF instance models. The Query Explorer can interact with EMF based 
+  editors such as the generated tree editor, and even with GMF and Graphiti editors. Advanced 
+  querying use  cases, like pattern match set filtering and detail observation is also available with
+  the Query Explorer. The following picture presents the Pattern Editor and the Query Explorer view.
+
+## The use cases
+ - "Use cases": You can read about the basic use cases of EMF\-IncQuery
+ - "Advanced use cases": There are advanced use cases too. Check it out here.
