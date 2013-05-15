@@ -4,7 +4,7 @@ import org.eclipse.incquery.tooling.ui.tests.interfaces.Focusable
 import org.eclipse.incquery.tooling.ui.tests.swtbot.basic.SwtBotComponent
 import org.eclipse.incquery.tooling.ui.tests.swtbot.basic.View
 import org.eclipse.incquery.tooling.ui.tests.swtbot.helper.Finder
-import org.jnario.lib.TimeoutError
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException
 
 class QueryExplorer extends SwtBotComponent implements Focusable {
 	var View view
@@ -12,11 +12,9 @@ class QueryExplorer extends SwtBotComponent implements Focusable {
 	new() {
 		try {
 			view = new View("Query Explorer")	
-		} catch (TimeoutError e){
-			open()
-			view = new View("Query Explorer")
+		} catch (WidgetNotFoundException e){
+			view = this.open()
 		}
-		
 	}
 
 	def greenButton(){ new GreenButton(view) }
@@ -26,12 +24,11 @@ class QueryExplorer extends SwtBotComponent implements Focusable {
 	def private open(){
 		val find = new Finder()
 		find.menu("Window").choose("Show View", "Other...")
-		val shell = find.window("Show View").focus
+		val w = find.window("Show View").focus
 		find.tree.choose("EMF-IncQuery","Query Explorer")
 		find.button("OK").click
-		shell.waitUntilCloses
-		find.view("Query Explorer")
-		
+		w.waitUntilCloses
+		return find.view("Query Explorer")
 	} 
 
 	override focus() {

@@ -6,35 +6,38 @@ import org.eclipse.incquery.tooling.ui.tests.swtbot.helper.UiTestBot
 import org.eclipse.incquery.tooling.ui.tests.swtbot.specific.Wizard
 import org.jnario.lib.StepArguments
 
-import static org.eclipse.incquery.tooling.ui.tests.UseCasesFeatureBackground.*
-
+import static extension org.eclipse.incquery.tooling.ui.tests.UseCasesFeatureBackground.*
 import static extension org.jnario.lib.JnarioIterableExtensions.*
 import static extension org.jnario.lib.Should.*
-
+	
 Feature:  Use cases
+	EMF-IncQuery provides an intuitive user interface to create, edit and debug queries.
+	It assists users with various wizards, supports the editing of query definitions (patterns) in an
+	Xtext-based editor and also provides query debugging features with the Query Explorer view.
+	
 	Background:
-		extension static UiTestBot b = new UiTestBot()
-		//var String projectName
-
-	Scenario: New EMF-IncQuery project wizard
+	extension static UiTestBot b = new UiTestBot()
+	Given you have Eclipse set-up and EMF-IncQuery installed   
+		b.ready => true
+		
+	Scenario: 3.4.1 New EMF-IncQuery project wizard
 		var Wizard w
-		Given "EMF-IncQuery, EMF-IncQuery Project" wizard is open
+		Given "EMF-IncQuery, EMF-IncQuery Project" wizard is open 
 			w = b.wizard(args.first.split(", ")).focus
 			//b.help.captureScreenshot(args.first + "-window.png",shell)
 		And the "Finish" button is inactive
 			b.find.button(args.first).isInactive => true
-		And enter "school.tests" in the text field "Project name:"
+		When entering "school.tests" in the "Project name:" text field
 			b.find.text(args.second).setText(args.first)
-		And I click on the "Finish" button
+		And the "Finish" button is clicked 
 			b.find.button(args.first).click
-		And wait for the wizard  to close
+		And after waiting for the wizard to close
 			w.waitUntilCloses
-		And set up dependancies for project "school.tests"
-			b.help.setupProjectDependency(args.first, '''
-			Manifest-Version: 1.0
+		And the dependancies are set up for project "school.tests" as
+		''' Manifest-Version: 1.0
 			Bundle-ManifestVersion: 2
-			Bundle-Name: «args.first»
-			Bundle-SymbolicName: «args.first»;singleton:=true
+			Bundle-Name: school.tests
+			Bundle-SymbolicName: school.tests;singleton:=true
 			Bundle-Version: 0.0.1.qualifier
 			Require-Bundle: org.eclipse.emf.ecore,
 			 org.eclipse.emf.transaction,
@@ -44,87 +47,114 @@ Feature:  Use cases
 			 school.edit;bundle-version="0.7.0",
 			 school.editor;bundle-version="0.7.0"
 			Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-			''')
-		Then I  have "school.tests" in the Project Explorer
-			b.projectExplorer.hasItem(args.first.split(", ")) => true
+		''' 
+			b.help.setupProjectDependency(args.first, args.second)
+		Then in the ProjectExplorer there is a "school.tests" item
+			assert b.projectExplorer.hasItem(args.first.split(", ")) => true
 		
-	Scenario: New EMF-IncQuery query definition
+	Scenario: 3.4.2 New EMF-IncQuery query definition
 		Given "EMF-IncQuery, EMF-IncQuery Query Definition" wizard is open
-		And enter "schoolQueries.eiq" in the text field "File name:"
-		And I click on the "Next >" button
-		And enter "testPattern" in the text field "Pattern name:"
-		And I click on the "Finish" button 
-		And wait for the window to close 
-		Then I  have "school.tests, src, schoolQueries.eiq" in the Project Explorer
-			
-	Scenario: Open Query Explorer
+		When entering "schoolQueries.eiq" in the "File name:" text field
+		And the "Next >" button is clicked
+		And entering "testPattern" in the "Pattern name:" text field
+		And the "Finish" button is clicked 
+		And after waiting for the wizard to close
+		Then in the ProjectExplorer there is a "school.tests, src, schoolQueries.eiq" item
+	
+	Scenario: 3.4.3 New Generator model wizard
+		Given the "test-files/GenModSampleProject" is imported to the workspace
+		And "EMF-IncQuery, EMF-IncQuery Generator model" wizard is open
+		When the "GenModSampleProject" is selected from the table
+		And the "school, model, school.genmodel" is selected from the tree 
+		And the "Finish" button is clicked 
+		And after waiting for the wizard to close
+		Then in the ProjectExplorer there is a "school.tests, generator.eiqgen" item
+		
+	Scenario: 3.4.4 Open Query Explorer
 		var Window w
 		When "Show View, Other..." is selected from the "Window" menu
 			b.find.menu(args.second).choose(args.first.split(", "))
 		And "Show View" window is open
 			w = b.find.window(args.first).focus 
-		And I select "Query Explorer" under "EMF-IncQuery"
-			b.find.tree.choose(args.second, args.first)
-		And I click on the "OK" button
-		And wait for the window to close
+		And the "EMF-IncQuery, Query Explorer" is selected from the tree 
+			b.find.tree.choose(args.first.split(", "))
+		And the "OK" button is clicked
+		And after waiting for the window to close
 			w.waitUntilCloses
-		Then "Query Explorer" view should be open
+		Then "Query Explorer" view is open
 			b.find.view(args.first)
 
-	Scenario: Edit Queries
+	Scenario: 3.4.5 Edit Queries
 		var Editor e
-		When "schoolQueries.eiq" editor is open
+		Given the Query Explorer is open
+			b.queryExplorer
+		And "schoolQueries.eiq" editor is open
 			e = b.find.editor(args.first)
-		And I enter the  test patterns
-			e.setText('''
-					package school.tests
-					import "http://school.ecore"
-					pattern students(S) = { 
-						Student(S);
-					}
-					pattern teachersOfSchool(T:Teacher,Sch:School) = {
-					 	School.teachers(Sch,T);
-					}
-					pattern coursesOfTeacher(T:Teacher, C:Course) = {
-					 	Teacher.courses(T,C);
-					} 
-					pattern classesOfTeacher(T, SC) = {
-					 	find coursesOfTeacher(T,C);
-					 	Course.schoolClass(C,SC);
-					}
-					''')
-		And save changes in the "schoolQueries.eiq" editor 
+		When these test patterns are entered: 
+		'''
+		package school.tests
+		import "http://school.ecore"
+		pattern students(S) = { 
+			Student(S);
+		}
+		pattern teachersOfSchool(T:Teacher,Sch:School) = {
+		 	School.teachers(Sch,T);
+		}
+		pattern coursesOfTeacher(T:Teacher, C:Course) = {
+		 	Teacher.courses(T,C);
+		} 
+		pattern classesOfTeacher(T, SC) = {
+		 	find coursesOfTeacher(T,C);
+		 	Course.schoolClass(C,SC);
+		}
+		'''
+			e.setText(args.first)
+		And the changes in the "schoolQueries.eiq" editor are saved 
 			e.save()
-		And I click on  the Green Button of Query Explorer
-		Then I have "Runtime, school.tests" in the Pattern Registry
+		And the Green Button of Query Explorer is clicked
+		Then in the Pattern Registry there is a "Runtime, school.tests" item 
 			b.queryExplorer.patternRegistry.hasItem(args.first.split(", ")) => true	
 		And I make a screenshot named "pattern-loaded.jpg"
 
-	Scenario: Load model instance by pressing play button
-		Given I  create a "model" folder in "school.tests"
+	Scenario: 3.4.6 Load model instance by pressing play button
+		Given "model" folder is created in the "school.tests" project
 			b.help.createFolderInPath(args.first, args.second) 
-		And copied my "test-files/BUTE.school" file to "school.tests, model"
+		And the "test-files/BUTE.school" file is copied to "school.tests, model"
 			b.help.addFileFromBundleToFolder(
 				args.first.split("/").last,
 				args.first,
 				args.second.split(", ")
 			)
-		When I open the "school.tests, model, BUTE.school" from the Project Explorer view in the default editor
+		And the Query Explorer is open
+		When the "school.tests, model, BUTE.school" is opened from the Project Explorer
 			b.projectExplorer.activate(args.first.split(", "))
-		And wait for the "BUTE.school" editor to open 
+		And after waiting for the "BUTE.school" editor to open 
 			b.help.waitFor.editor(args.first)
-		And I click on  the Green Button of Query Explorer
+		And the Green Button of Query Explorer is clicked
 			b.queryExplorer.greenButton.click
-		Then model "BUTE.school" should be loaded in the middle tree of Query Explorer from the "school.tests" project
+		Then the "BUTE.school" model is loaded in the middle tree of Query Explorer from the "school.tests" project
 			b.queryExplorer.middleTree.hasItem(
 				"[platform:/resource/"+args.second+"/model/"+args.first+"][school.presentation.SchoolEditorID]") => true
-		And  I make a screenshot named "model-loaded.jpg"
+		And I make a screenshot named "model-loaded.jpg"
 			b.help.captureScreenshot(args.first)
-
-
-	Scenario: Query results are shown
-		Given I have a model and a query open in the editor
-		And they are loaded
+	
+	Scenario: 3.4.7 Query results are shown 
+		Given the "BUTE.school" model is loaded
+		And the "schoolQueries.eiq" queries are loaded
 		And I have results in the middle tree
 		When I modify the querys in the query editor
 		Then the query results should be the new results
+	
+	Scenario: 3.4.8 Results follow Pattern Registry checkmars
+		Given the "BUTE.school" model is loaded
+		And the "schoolQueries.eiq" queries are loaded
+		And I have results in the middle tree
+		When I modify the checkmark of a query in the Pattern Registy
+		Then the query results should resamble this change
+	
+	Scenario: 3.4.9 Details/Filters show result details
+		Given the "BUTE.school" model is loaded
+		And the "schoolQueries.eiq" queries are loaded
+		And I have results in the middle tree
+		When I modify select a result in the middle tree
+		Then the Details/Filters table should show the details of that result

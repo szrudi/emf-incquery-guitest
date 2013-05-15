@@ -11,11 +11,14 @@ import org.eclipse.incquery.tooling.ui.tests.swtbot.specific.ProjectExplorer
 class UiTestBot {
 	val Finder finder
 	val TestHelper helper
+	var isReady = false;
 		
 	new(){
 		finder = new Finder
 		helper = new TestHelper(finder)
 	}
+
+	def ready(){ isReady }
 
 	def find(){ finder }
 
@@ -37,7 +40,8 @@ class UiTestBot {
 		}
         if(view != null && view.getTitle().equals("Welcome")) {
         	view.close();
-        }		
+        }
+        isReady = true;		
 	}
 
 	/*
