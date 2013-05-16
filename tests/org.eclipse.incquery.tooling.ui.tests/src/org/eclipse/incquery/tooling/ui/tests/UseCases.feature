@@ -34,19 +34,20 @@ Feature:  Use cases
 		And after waiting for the wizard to close
 			w.waitUntilCloses
 		And the dependancies are set up for project "school.tests" as
-		''' Manifest-Version: 1.0
-			Bundle-ManifestVersion: 2
-			Bundle-Name: school.tests
-			Bundle-SymbolicName: school.tests;singleton:=true
-			Bundle-Version: 0.0.1.qualifier
-			Require-Bundle: org.eclipse.emf.ecore,
-			 org.eclipse.emf.transaction,
-			 org.eclipse.incquery.runtime,
-			 org.eclipse.xtext.xbase.lib,
-			 school;bundle-version="0.7.0",
-			 school.edit;bundle-version="0.7.0",
-			 school.editor;bundle-version="0.7.0"
-			Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+		'''
+		Manifest-Version: 1.0
+		Bundle-ManifestVersion: 2
+		Bundle-Name: school.tests
+		Bundle-SymbolicName: school.tests;singleton:=true
+		Bundle-Version: 0.0.1.qualifier
+		Require-Bundle: org.eclipse.emf.ecore,
+		 org.eclipse.emf.transaction,
+		 org.eclipse.incquery.runtime,
+		 org.eclipse.xtext.xbase.lib,
+		 school;bundle-version="0.7.0",
+		 school.edit;bundle-version="0.7.0",
+		 school.editor;bundle-version="0.7.0"
+		Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 		''' 
 			b.help.setupProjectDependency(args.first, args.second)
 		Then in the ProjectExplorer there is a "school.tests" item
