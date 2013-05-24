@@ -14,7 +14,7 @@ Feature:  Use cases
 	EMF-IncQuery provides an intuitive user interface to create, edit and debug queries.
 	It assists users with various wizards, supports the editing of query definitions (patterns) in an
 	Xtext-based editor and also provides query debugging features with the Query Explorer view.
-	
+
 	Background:
 	extension static UiTestBot b = new UiTestBot()
 	Given you have Eclipse set-up and EMF-IncQuery installed   
@@ -33,7 +33,7 @@ Feature:  Use cases
 			b.find.button(args.first).click
 		And after waiting for the wizard to close
 			w.waitUntilCloses
-		And the dependancies are set up for project "school.tests" as
+		And the dependencies are set up for project "school.tests" as
 		'''
 		Manifest-Version: 1.0
 		Bundle-ManifestVersion: 2
@@ -51,7 +51,7 @@ Feature:  Use cases
 		''' 
 			b.help.setupProjectDependency(args.first, args.second)
 		Then in the ProjectExplorer there is a "school.tests" item
-			assert b.projectExplorer.hasItem(args.first.split(", ")) => true
+			b.projectExplorer.hasItem(args.first.split(", ")) => true
 		
 	Scenario: 3.4.2 New EMF-IncQuery query definition
 		Given "EMF-IncQuery, EMF-IncQuery Query Definition" wizard is open
@@ -143,15 +143,15 @@ Feature:  Use cases
 		Given the "BUTE.school" model is loaded
 		And the "schoolQueries.eiq" queries are loaded
 		And I have results in the middle tree
-		When I modify the querys in the query editor
+		When I modify the queries in the query editor
 		Then the query results should be the new results
 	
-	Scenario: 3.4.8 Results follow Pattern Registry checkmars
+	Scenario: 3.4.8 Results follow Pattern Registry  check marks
 		Given the "BUTE.school" model is loaded
 		And the "schoolQueries.eiq" queries are loaded
 		And I have results in the middle tree
-		When I modify the checkmark of a query in the Pattern Registy
-		Then the query results should resamble this change
+		When I modify the check marks of a query in the Pattern Registry
+		Then the query results should resemble this change
 	
 	Scenario: 3.4.9 Details/Filters show result details
 		Given the "BUTE.school" model is loaded
